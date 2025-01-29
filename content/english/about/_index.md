@@ -1,21 +1,21 @@
 ---
-title: "Hey, I am John Doe!"
+title: "Hey, I am Yury Bely!"
 meta_title: "About"
-description: "this is meta description"
+description: "yury bely programmer"
 image: "/images/avatar.png"
 draft: false
 social:
   - name: github
     icon: fa-brands fa-github
-    link: https://github.com
+    link: https://github.com/teremo4ek
 
   - name: twitter
     icon: fa-brands fa-twitter
-    link: https://twitter.com
+    link: https://twitter.com/teremo4ek
 
   - name: linkedin
     icon: fa-brands fa-linkedin
-    link: https://linkedin.com
+    link: https://www.linkedin.com/in/yurybely
 ---
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis illum nesciunt commodi vel nisi ut alias excepturi ipsum, totam, labore tempora, odit ex iste tempore sed. Fugit voluptatibus perspiciatis assumenda nulla ad nihil, omnis vel, doloremque sit quam autem optio maiores, illum eius facilis et quo consectetur provident dolor similique! Enim voluptatem dicta expedita veritatis repellat dolorum impedit, provident quasi at.
+Professional Software Engineer with the experience of more than 15 years in custom standalone and network applications development. Has created mobile applications for Android and iOS on Xamarin, and iOS on Swift, and developed software with C++ for Windows, Linux and Mac platforms.
