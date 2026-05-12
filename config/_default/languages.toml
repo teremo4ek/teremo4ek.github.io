@@ -1,6 +1,13 @@
 ################ English language ##################
 [en]
-label = "En"
+label = "English"
 locale = "en-us"
 contentDir = "content/english"
 weight = 1
+
+################ Russian language ##################
+[ru]
+label = "Русский"
+locale = "ru-ru"
+contentDir = "content/russian"
+weight = 2

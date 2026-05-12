@@ -51,6 +51,15 @@ draft: false
 
 Fields: `title`, `description`, `date` (RFC3339), `image` (path from site root), `categories`, `tags`, `draft` (true = dev only), `meta_title` (optional SEO). Images go in `assets/images/` or `static/images/`. Posts sort by date (newest first), 10 per page.
 
+## Multilingual (English + Russian)
+
+- English: `content/english/`, URL at root `/`
+- Russian: `content/russian/`, URL at `/ru/`
+- Language switcher is built into the theme header (auto-shows when multilingual)
+- Config: `config/_default/languages.toml`, menus: `menus.en.toml` / `menus.ru.toml`
+- UI translations: `i18n/en.yaml` / `i18n/ru.yaml`
+- Russian blog posts go in `content/russian/blog/` with the same frontmatter format
+
 ## Theme
 
 `themes/hugoplate/` — do not modify directly. Override via `layouts/` or `assets/`.

@@ -1,0 +1,31 @@
+############# Russian navigation ##############
+
+# main menu
+[[main]]
+name = "Главная"
+url = "/"
+weight = 1
+
+[[main]]
+name = "Обо мне"
+url = "/about"
+weight = 2
+
+[[main]]
+name = "Блог"
+url = "/blog"
+weight = 3
+
+[[main]]
+weight = 4
+name = "Страницы"
+
+[[main]]
+parent = "Страницы"
+name = "Элементы"
+url = "/elements"
+
+[[main]]
+parent = "Страницы"
+name = "Категории"
+url = "/categories"
