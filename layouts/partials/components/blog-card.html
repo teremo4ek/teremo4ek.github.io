@@ -1,0 +1,39 @@
+{{ $page := . }}
+{{ $fallbackLang := "" }}
+{{ if reflect.IsMap . }}
+  {{ $page = .page }}
+  {{ $fallbackLang = .fallbackLang }}
+{{ end }}
+<div class="bg-body dark:bg-darkmode-body">
+  {{ $image:= $page.Params.image }}
+  {{ if $image }}
+  {{ partial "image" (dict "Src" $image "Context" $page "Alt" $page.Title "Class" "mb-6 w-full rounded") }}
+  {{ end }}
+  <h4 class="mb-3">
+    <a href="{{ $page.RelPermalink }}">
+      {{ $page.Title }}
+    </a>
+    {{ with $fallbackLang }}
+    <span class="ml-2 rounded bg-primary/10 px-2 py-0.5 text-xs font-semibold uppercase dark:bg-darkmode-primary/20">{{ . }}</span>
+    {{ end }}
+  </h4>
+  {{ $categories:= $page.Params.categories }}
+  {{ if $categories }}
+  <ul class="mb-4">
+    <li class="mr-4 inline-block">
+      <i class="fa-regular fa-folder mr-1"></i>
+      {{ range $i,$p:= $categories }}
+      <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/">{{ . | humanize }}{{ if ne $i
+        (sub (len $categories) 1) }}
+        {{ "," }}
+        {{ end }}
+      </a>
+      {{ end }}
+    </li>
+  </ul>
+  {{ end }}
+  <p class="mb-6">{{ $page.Summary | plainify }}</p>
+  <a class="btn btn-outline-primary btn-sm" href="{{ $page.RelPermalink }}">
+    {{ T "read_more" }}
+  </a>
+</div>
