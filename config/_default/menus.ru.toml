@@ -22,10 +22,5 @@ name = "Страницы"
 
 [[main]]
 parent = "Страницы"
-name = "Элементы"
-url = "/elements"
-
-[[main]]
-parent = "Страницы"
 name = "Категории"
 url = "/categories"

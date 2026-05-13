@@ -32,11 +32,6 @@ name = "Pages"
 
 [[main]]
 parent = "Pages"
-name = "Elements"
-url = "/elements"
-
-[[main]]
-parent = "Pages"
 name = "Categories"
 url = "/categories"
 
