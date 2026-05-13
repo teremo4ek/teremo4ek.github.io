@@ -23,6 +23,13 @@
   {{ with .Params.tags }},
   "keywords": {{ . }}
   {{ end }}
+  {{ if .Parent.Params.series }},
+  "isPartOf": {
+    "@type": "Blog",
+    "@id": {{ .Parent.Permalink }},
+    "name": {{ .Parent.Title }}
+  }
+  {{ end }}
 }
 </script>
 {{ end }}

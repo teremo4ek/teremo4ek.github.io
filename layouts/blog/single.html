@@ -5,6 +5,31 @@
       <article class="lg:col-10">
         {{ partial "components/json-ld" . }}
 
+        {{/* Series breadcrumb */}}
+        {{ if .Parent.Params.series }}
+        <nav class="mb-6">
+          <ol class="inline-flex items-center space-x-2 text-sm">
+            <li>
+              <a class="text-primary dark:text-darkmode-primary" href="{{ site.Home.RelPermalink }}">
+                {{ T "home" }}
+              </a>
+              <span class="mx-1">/</span>
+            </li>
+            <li>
+              <a class="text-primary dark:text-darkmode-primary" href="{{ relLangURL "blog" }}/">
+                Blog
+              </a>
+              <span class="mx-1">/</span>
+            </li>
+            <li>
+              <a class="text-primary dark:text-darkmode-primary" href="{{ .Parent.RelPermalink }}">
+                {{ .Parent.Title }}
+              </a>
+            </li>
+          </ol>
+        </nav>
+        {{ end }}
+
         {{ $image:= .Params.image }}
         {{ if $image }}
         <div class="mb-10">
@@ -14,6 +39,27 @@
         <h1 class="h2 mb-4">
           {{ .Title }}
         </h1>
+
+        {{/* "Part of series" badge */}}
+        {{ if .Parent.Params.series }}
+        <div class="mb-4">
+          <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-darkmode-primary/20 dark:text-darkmode-primary">
+            <i class="fa-solid fa-book-open mr-1.5"></i>
+            {{ T "series_part_of" }} {{ .Parent.Title }}
+          </span>
+          {{ $chapters := .Parent.RegularPages.ByWeight }}
+          {{ $current := . }}
+          {{ $total := len $chapters }}
+          {{ range $i, $ch := $chapters }}
+            {{ if eq $ch $current }}
+              <span class="ml-2 text-xs text-light dark:text-darkmode-light">
+                {{ T "series_chapter_of" (dict "Current" (add $i 1) "Total" $total) }}
+              </span>
+            {{ end }}
+          {{ end }}
+        </div>
+        {{ end }}
+
         <ul class="mb-4">
           {{ $categories:= .Params.categories }}
           {{ if $categories }}
@@ -34,7 +80,7 @@
           </li>
           <li class="mr-4 inline-block">
             <i class="fa-regular fa-file-lines mr-2"></i>
-            {{ .ReadingTime }} min read
+            {{ .ReadingTime }} {{ T "min_read" }}
           </li>
         </ul>
 
@@ -43,6 +89,59 @@
         <div class="content mb-10">
           {{ .Content }}
         </div>
+
+        {{/* Series chapter navigation */}}
+        {{ if .Parent.Params.series }}
+        {{ $chapters := .Parent.RegularPages.ByWeight }}
+        {{ $current := . }}
+        {{ range $i, $ch := $chapters }}
+          {{ if eq $ch $current }}
+            <div class="series-nav mt-10 mb-10 flex items-center justify-between gap-4">
+              {{ if gt $i 0 }}
+                {{ $prev := index $chapters (sub $i 1) }}
+                <a href="{{ $prev.RelPermalink }}"
+                   class="group flex items-center gap-2 rounded-lg border border-border p-4 transition hover:border-primary dark:border-darkmode-border dark:hover:border-darkmode-primary">
+                  <span class="text-primary dark:text-darkmode-primary">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </span>
+                  <div>
+                    <span class="text-xs text-light dark:text-darkmode-light">{{ T "series_prev_chapter" }}</span>
+                    <div class="font-semibold group-hover:text-primary dark:group-hover:text-darkmode-primary">
+                      {{ $prev.Title }}
+                    </div>
+                  </div>
+                </a>
+              {{ else }}
+                <div></div>
+              {{ end }}
+              {{ if lt $i (sub (len $chapters) 1) }}
+                {{ $next := index $chapters (add $i 1) }}
+                <a href="{{ $next.RelPermalink }}"
+                   class="group flex items-center justify-end gap-2 rounded-lg border border-border p-4 text-right transition hover:border-primary dark:border-darkmode-border dark:hover:border-darkmode-primary">
+                  <div>
+                    <span class="text-xs text-light dark:text-darkmode-light">{{ T "series_next_chapter" }}</span>
+                    <div class="font-semibold group-hover:text-primary dark:group-hover:text-darkmode-primary">
+                      {{ $next.Title }}
+                    </div>
+                  </div>
+                  <span class="text-primary dark:text-darkmode-primary">
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </span>
+                </a>
+              {{ else }}
+                <div></div>
+              {{ end }}
+            </div>
+            <div class="mb-10 text-center">
+              <a href="{{ .Parent.RelPermalink }}" class="btn btn-outline-primary btn-sm">
+                <i class="fa-solid fa-book-open mr-2"></i>
+                {{ T "series_back_to" }} {{ .Parent.Title }}
+              </a>
+            </div>
+          {{ end }}
+        {{ end }}
+        {{ end }}
+
         <div class="row items-start justify-between">
           {{ $tags:= .Params.tags }}
           {{ if $tags }}

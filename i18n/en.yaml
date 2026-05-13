@@ -12,3 +12,14 @@ search_initial_message: Type something to search..
 search_navigate: to navigate
 search_select: to select
 search_close: to close
+min_read: min read
+series_badge: Series
+series_chapters: Chapters
+series_chapters_count: "{{ .Count }} chapters"
+series_chapters_label: chapters
+series_view_chapters: View Chapters
+series_part_of: "Part of"
+series_chapter_of: "Chapter {{ .Current }} of {{ .Total }}"
+series_prev_chapter: Previous Chapter
+series_next_chapter: Next Chapter
+series_back_to: "Back to"

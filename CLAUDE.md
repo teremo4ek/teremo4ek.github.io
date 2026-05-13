@@ -51,6 +51,61 @@ draft: false
 
 Fields: `title`, `description`, `date` (RFC3339), `image` (path from site root), `categories`, `tags`, `draft` (true = dev only), `meta_title` (optional SEO). Images go in `assets/images/` or `static/images/`. Posts sort by date (newest first), 10 per page.
 
+## Creating Blog Series
+
+Series group multiple chapters under one theme (e.g., "Rust Cookbook"). They appear as a single card in the blog listing. Clicking opens a landing page with a chapter list.
+
+### Structure
+
+```
+content/english/blog/
+  rust-cookbook/               ← series directory (any name)
+    _index.md                  ← series landing page
+    01-variables.md            ← chapter 1
+    02-ownership.md            ← chapter 2
+```
+
+### Series landing (`_index.md`)
+
+```yaml
+---
+title: "Rust Cookbook"
+description: "Practical guide to Rust programming"
+date: 2026-05-15T05:00:00Z
+image: "/images/rust-cookbook.png"
+categories: ["Rust"]
+tags: ["rust", "tutorial"]
+series: true                    ← required flag
+---
+```
+
+Body of `_index.md` is the series introduction text (optional).
+
+### Chapter files
+
+```yaml
+---
+title: "Variables and Mutability"
+description: "Understanding variables in Rust"
+date: 2026-05-15T05:00:00Z
+weight: 1                      ← chapter order (1, 2, 3...)
+image: "/images/rust-ch1.png"
+categories: ["Rust"]
+tags: ["rust", "basics"]
+---
+```
+
+`weight` determines chapter order. Without it, Hugo sorts by date then filename. Chapters are hidden from the main blog listing — they only appear on the series landing page.
+
+### URLs
+
+- Series landing: `/blog/rust-cookbook/`
+- Chapter: `/blog/rust-cookbook/01-variables/`
+
+### Russian series
+
+Same structure under `content/russian/blog/`. Same `series: true` flag. Chapter files can have different names.
+
 ## Multilingual (English + Russian)
 
 - English: `content/english/`, URL at root `/`

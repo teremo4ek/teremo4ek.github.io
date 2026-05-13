@@ -1,60 +1,165 @@
 {{ define "main" }}
-  {{ partial "page-header" . }}
 
-  <section class="section">
-    <div class="container">
-      <div class="row gx-5">
-        <!-- blog posts -->
-        <div class="lg:col-8">
-          <div class="row">
-            {{/* Collect current language pages */}}
-            {{ $currentPages := .RegularPages }}
-            {{ $currentLang := site.Language.Lang }}
+{{ if .Params.series }}
+{{/* ===== Series landing page ===== */}}
+{{ partial "page-header" . }}
 
-            {{/* Build set of current-language filenames */}}
-            {{ $currentNames := newScratch }}
-            {{ range $currentPages }}
-              {{ $currentNames.Set .File.ContentBaseName true }}
+<section class="section">
+  <div class="container">
+    <div class="row justify-center">
+      <div class="lg:col-10">
+
+        {{/* Series description */}}
+        <p class="mb-4 text-lg text-dark dark:text-darkmode-dark">
+          {{ .Description }}
+        </p>
+        <ul class="mb-6">
+          {{ with .Params.categories }}
+          <li class="mr-4 inline-block">
+            <i class="fa-regular fa-folder mr-1"></i>
+            {{ range $i, $c := . }}
+            <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/">{{ . | humanize }}{{ if ne $i (sub (len .) 1) }},{{ end }}</a>
             {{ end }}
+          </li>
+          {{ end }}
+          <li class="mr-4 inline-block">
+            <i class="fa-regular fa-clock mr-1"></i>
+            {{ T "series_chapters_count" (dict "Count" (len .RegularPages)) }}
+          </li>
+        </ul>
 
-            {{/* Collect untranslated pages from the other language */}}
-            {{ $fallbackPages := slice }}
-            {{ $fallbackLangs := newScratch }}
-            {{ range hugo.Sites }}
-              {{ if ne .Language.Lang $currentLang }}
-                {{ $otherBlog := .GetPage "/blog" }}
-                {{ if $otherBlog }}
-                  {{ range $otherBlog.RegularPages }}
-                    {{ if not ($currentNames.Get .File.ContentBaseName) }}
-                      {{ $fallbackPages = $fallbackPages | append . }}
-                      {{ $fallbackLangs.Set .File.ContentBaseName .Language.Lang }}
-                    {{ end }}
+        {{/* Intro content from _index.md body */}}
+        {{ with .Content }}
+        <div class="content mb-10">{{ . }}</div>
+        {{ end }}
+
+        {{/* Chapter list */}}
+        {{ $chapters := .RegularPages.ByWeight }}
+        {{ with $chapters }}
+        <div class="series-chapters">
+          <h2 class="h3 mb-6">{{ T "series_chapters" }}</h2>
+          <ol class="list-none space-y-4 pl-0">
+            {{ range $i, $chapter := . }}
+            <li>
+              <a href="{{ $chapter.RelPermalink }}"
+                 class="series-chapter-item flex items-start gap-4 rounded-lg bg-theme-light p-5 transition hover:bg-primary/5 dark:bg-darkmode-theme-light dark:hover:bg-darkmode-primary/10">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white dark:bg-darkmode-primary dark:text-darkmode-body">
+                  {{ add $i 1 }}
+                </span>
+                <div class="flex-1">
+                  <h3 class="font-semibold group-hover:text-primary dark:group-hover:text-darkmode-primary">
+                    {{ $chapter.Title }}
+                  </h3>
+                  <p class="mt-1 text-sm text-light dark:text-darkmode-light">
+                    {{ $chapter.Summary | plainify | truncate 120 }}
+                  </p>
+                  <span class="mt-2 inline-block text-xs text-light dark:text-darkmode-light">
+                    <i class="fa-regular fa-file-lines mr-1"></i>
+                    {{ $chapter.ReadingTime }} {{ T "min_read" }}
+                  </span>
+                </div>
+              </a>
+            </li>
+            {{ end }}
+          </ol>
+        </div>
+        {{ end }}
+
+        {{/* Tags */}}
+        {{ with .Params.tags }}
+        <div class="mt-10">
+          <h5 class="mr-3 inline-block">{{ T "tags" }} :</h5>
+          <ul class="inline-block">
+            {{ range . }}
+            <li class="inline-block">
+              <a class="bg-theme-light hover:bg-primary dark:bg-darkmode-theme-light dark:hover:bg-darkmode-primary dark:hover:text-dark m-1 block rounded px-3 py-1 hover:text-white"
+                href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/">
+                {{ . | humanize }}
+              </a>
+            </li>
+            {{ end }}
+          </ul>
+        </div>
+        {{ end }}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ else }}
+{{/* ===== Regular blog listing ===== */}}
+{{ partial "page-header" . }}
+
+<section class="section">
+  <div class="container">
+    <div class="row gx-5">
+      <!-- blog posts -->
+      <div class="lg:col-8">
+        <div class="row">
+          {{/* Collect current language: regular posts + series landing pages */}}
+          {{ $regularPosts := .RegularPages }}
+          {{ $seriesPages := where .Pages "Params.series" true }}
+          {{ $currentPages := $regularPosts | append $seriesPages }}
+          {{ $currentLang := site.Language.Lang }}
+
+          {{/* Build dedup set: ContentBaseName for posts, dirname for series */}}
+          {{ $seen := newScratch }}
+          {{ range $currentPages }}
+            {{ $key := cond (eq .Kind "section") (printf "s:%s" (path.Base .File.Dir)) .File.ContentBaseName }}
+            {{ $seen.Set $key true }}
+          {{ end }}
+
+          {{/* Collect untranslated pages from the other language */}}
+          {{ $fallbackPages := slice }}
+          {{ $fallbackLangs := newScratch }}
+          {{ range hugo.Sites }}
+            {{ if ne .Language.Lang $currentLang }}
+              {{ $otherBlog := .GetPage "/blog" }}
+              {{ if $otherBlog }}
+                {{/* Regular posts */}}
+                {{ range $otherBlog.RegularPages }}
+                  {{ if not ($seen.Get .File.ContentBaseName) }}
+                    {{ $fallbackPages = $fallbackPages | append . }}
+                    {{ $fallbackLangs.Set .File.ContentBaseName .Language.Lang }}
+                  {{ end }}
+                {{ end }}
+                {{/* Series landing pages */}}
+                {{ range where $otherBlog.Pages "Params.series" true }}
+                  {{ $key := printf "s:%s" (path.Base .File.Dir) }}
+                  {{ if not ($seen.Get $key) }}
+                    {{ $fallbackPages = $fallbackPages | append . }}
+                    {{ $fallbackLangs.Set $key .Language.Lang }}
                   {{ end }}
                 {{ end }}
               {{ end }}
             {{ end }}
+          {{ end }}
 
-            {{/* Merge and sort by date descending */}}
-            {{ $allPages := $currentPages | append $fallbackPages }}
-            {{ $allPages = sort $allPages "Date" "desc" }}
+          {{/* Merge and sort */}}
+          {{ $allPages := $currentPages | append $fallbackPages }}
+          {{ $allPages = sort $allPages "Date" "desc" }}
 
-            {{ $paginator := .Paginate $allPages }}
-            {{ range $paginator.Pages }}
-              <div class="md:col-6 mb-14">
-                {{ $fbLang := $fallbackLangs.Get .File.ContentBaseName }}
-                {{ partial "components/blog-card" (dict "page" . "fallbackLang" $fbLang) }}
-              </div>
-            {{ end }}
-          </div>
-          {{ partial "components/pagination.html" . }}
+          {{ $paginator := .Paginate $allPages }}
+          {{ range $paginator.Pages }}
+            <div class="md:col-6 mb-14">
+              {{ $fbKey := cond (eq .Kind "section") (printf "s:%s" (path.Base .File.Dir)) .File.ContentBaseName }}
+              {{ $fbLang := $fallbackLangs.Get $fbKey }}
+              {{ partial "components/blog-card" (dict "page" . "fallbackLang" $fbLang) }}
+            </div>
+          {{ end }}
         </div>
-        <!-- sidebar -->
-        <div class="lg:col-4">
-          <!-- widget -->
-          {{ $widget:= site.Params.widgets.sidebar }}
-          {{ partialCached "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
-        </div>
+        {{ partial "components/pagination.html" . }}
+      </div>
+      <!-- sidebar -->
+      <div class="lg:col-4">
+        <!-- widget -->
+        {{ $widget:= site.Params.widgets.sidebar }}
+        {{ partialCached "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+{{ end }}
 {{ end }}

@@ -17,12 +17,28 @@
   }
 }
 
+// Series chapter list
+.series-chapter-item {
+  &:hover h3 {
+    @apply text-primary dark:text-darkmode-primary;
+  }
+}
+
+// Series prev/next navigation
+.series-nav {
+  a {
+    flex: 1;
+    max-width: 45%;
+  }
+}
+
 // Print styles
 @media print {
   nav,
   footer,
   .toc,
-  .darkmode-toggle {
+  .darkmode-toggle,
+  .series-nav {
     display: none !important;
   }
 

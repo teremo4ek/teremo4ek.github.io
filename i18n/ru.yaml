@@ -12,3 +12,14 @@ search_initial_message: Начните вводить для поиска...
 search_navigate: для навигации
 search_select: для выбора
 search_close: для закрытия
+min_read: мин чтения
+series_badge: Серия
+series_chapters: Главы
+series_chapters_count: "{{ .Count }} глав"
+series_chapters_label: глав
+series_view_chapters: Смотреть главы
+series_part_of: "Часть серии"
+series_chapter_of: "Глава {{ .Current }} из {{ .Total }}"
+series_prev_chapter: Предыдущая глава
+series_next_chapter: Следующая глава
+series_back_to: "Назад к"

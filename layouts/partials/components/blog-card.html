@@ -17,23 +17,44 @@
     <span class="ml-2 rounded bg-primary/10 px-2 py-0.5 text-xs font-semibold uppercase dark:bg-darkmode-primary/20">{{ . }}</span>
     {{ end }}
   </h4>
-  {{ $categories:= $page.Params.categories }}
-  {{ if $categories }}
-  <ul class="mb-4">
-    <li class="mr-4 inline-block">
-      <i class="fa-regular fa-folder mr-1"></i>
-      {{ range $i,$p:= $categories }}
-      <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/">{{ . | humanize }}{{ if ne $i
-        (sub (len $categories) 1) }}
-        {{ "," }}
+
+  {{ if $page.Params.series }}
+    {{/* Series card */}}
+    <div class="mb-3">
+      <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-darkmode-primary/20 dark:text-darkmode-primary">
+        <i class="fa-solid fa-book-open mr-1.5"></i>
+        {{ T "series_badge" }}
+      </span>
+      <span class="ml-2 text-xs text-light dark:text-darkmode-light">
+        {{ $page.RegularPages | len }} {{ T "series_chapters_label" }}
+      </span>
+    </div>
+    {{ with $page.Params.description }}
+    <p class="mb-6">{{ . | plainify | truncate 120 }}</p>
+    {{ end }}
+    <a class="btn btn-outline-primary btn-sm" href="{{ $page.RelPermalink }}">
+      {{ T "series_view_chapters" }} &rarr;
+    </a>
+  {{ else }}
+    {{/* Regular post card */}}
+    {{ $categories:= $page.Params.categories }}
+    {{ if $categories }}
+    <ul class="mb-4">
+      <li class="mr-4 inline-block">
+        <i class="fa-regular fa-folder mr-1"></i>
+        {{ range $i,$p:= $categories }}
+        <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/">{{ . | humanize }}{{ if ne $i
+          (sub (len $categories) 1) }}
+          {{ "," }}
+          {{ end }}
+        </a>
         {{ end }}
-      </a>
-      {{ end }}
-    </li>
-  </ul>
+      </li>
+    </ul>
+    {{ end }}
+    <p class="mb-6">{{ $page.Summary | plainify }}</p>
+    <a class="btn btn-outline-primary btn-sm" href="{{ $page.RelPermalink }}">
+      {{ T "read_more" }}
+    </a>
   {{ end }}
-  <p class="mb-6">{{ $page.Summary | plainify }}</p>
-  <a class="btn btn-outline-primary btn-sm" href="{{ $page.RelPermalink }}">
-    {{ T "read_more" }}
-  </a>
 </div>
