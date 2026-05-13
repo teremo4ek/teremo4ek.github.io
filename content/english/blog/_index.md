@@ -1,5 +1,5 @@
 ---
 title: "Blog Posts"
 meta_title: ""
-description: "this is meta description"
+description: "Blog posts by Yury Bely — software engineering, programming, and web development"
 ---

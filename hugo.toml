@@ -1,12 +1,14 @@
 ######################## default configuration ####################
 # The base URL of your site (required). This will be prepended to all relative URLs.
-baseURL = "/"
+baseURL = "https://teremo4ek.github.io/"
 # Title of your website (required).
-title = ""
+title = "Yury Bely"
 # Your theme name
 theme = "hugoplate"
 # Default time zone for time stamps; use any valid tz database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 timeZone = "America/New_York"
+# generate robots.txt
+enableRobotsTXT = true
 # post excerpt
 summaryLength = 10 # see https://gohugo.io/content-management/excerpts/
 # disable language
@@ -19,12 +21,11 @@ defaultContentLanguage = 'en'
 defaultContentLanguageInSubdir = false
 
 ########################### Services #############################
-[services]
-[services.googleAnalytics]
-ID = ''
+# [services.googleAnalytics]
+# ID = ''
 
-[services.disqus]
-shortname = ''
+# [services.disqus]
+# shortname = ''
 
 ########################## Permalinks ############################
 [permalinks.page]
@@ -133,12 +134,6 @@ notAlternative = true
 
 # CSS Plugins
 [[params.plugins.css]]
-link = "plugins/swiper/swiper-bundle.css"
-lazy = true
-[[params.plugins.css]]
-link = "plugins/glightbox/glightbox.css"
-lazy = true
-[[params.plugins.css]]
 link = "plugins/font-awesome/v6/brands.css"
 lazy = true
 [[params.plugins.css]]
@@ -153,26 +148,5 @@ lazy = true
 link = "js/search.js"
 lazy = false
 [[params.plugins.js]]
-link = "plugins/swiper/swiper-bundle.js"
-lazy = false
-[[params.plugins.js]]
 link = "plugins/cookie.js"
 lazy = false
-[[params.plugins.js]]
-link = "plugins/glightbox/glightbox.js"
-lazy = true
-[[params.plugins.js]]
-link = "js/gallery-slider.js"
-lazy = true
-[[params.plugins.js]]
-link = "js/accordion.js"
-lazy = true
-[[params.plugins.js]]
-link = "js/tab.js"
-lazy = true
-[[params.plugins.js]]
-link = "js/modal.js"
-lazy = true
-[[params.plugins.js]]
-link = "plugins/youtube-lite.js"
-lazy = true
