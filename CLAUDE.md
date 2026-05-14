@@ -97,6 +97,24 @@ tags: ["rust", "basics"]
 
 `weight` determines chapter order. Without it, Hugo sorts by date then filename. Chapters are hidden from the main blog listing — they only appear on the series landing page.
 
+### Registering series in blog listing
+
+Hugo's multilingual content directories don't expose nested sections to the blog listing template. To make a series appear in the blog listing, add its path to the `series_paths` frontmatter array in the blog section `_index.md`:
+
+**`content/english/blog/_index.md`:**
+```yaml
+series_paths:
+  - "/blog/rust-cookbook"
+```
+
+**`content/russian/blog/_index.md`:**
+```yaml
+series_paths:
+  - "/blog/rust-cookbook"
+```
+
+Add a new entry for each series directory. Both language files should list the same paths so the fallback logic works across languages.
+
 ### URLs
 
 - Series landing: `/blog/rust-cookbook/`

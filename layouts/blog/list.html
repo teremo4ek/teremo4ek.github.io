@@ -1,91 +1,7 @@
 {{ define "main" }}
 
 {{ if .Params.series }}
-{{/* ===== Series landing page ===== */}}
-{{ partial "page-header" . }}
-
-<section class="section">
-  <div class="container">
-    <div class="row justify-center">
-      <div class="lg:col-10">
-
-        {{/* Series description */}}
-        <p class="mb-4 text-lg text-dark dark:text-darkmode-dark">
-          {{ .Description }}
-        </p>
-        <ul class="mb-6">
-          {{ with .Params.categories }}
-          <li class="mr-4 inline-block">
-            <i class="fa-regular fa-folder mr-1"></i>
-            {{ range $i, $c := . }}
-            <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/">{{ . | humanize }}{{ if ne $i (sub (len .) 1) }},{{ end }}</a>
-            {{ end }}
-          </li>
-          {{ end }}
-          <li class="mr-4 inline-block">
-            <i class="fa-regular fa-clock mr-1"></i>
-            {{ T "series_chapters_count" (dict "Count" (len .RegularPages)) }}
-          </li>
-        </ul>
-
-        {{/* Intro content from _index.md body */}}
-        {{ with .Content }}
-        <div class="content mb-10">{{ . }}</div>
-        {{ end }}
-
-        {{/* Chapter list */}}
-        {{ $chapters := .RegularPages.ByWeight }}
-        {{ with $chapters }}
-        <div class="series-chapters">
-          <h2 class="h3 mb-6">{{ T "series_chapters" }}</h2>
-          <ol class="list-none space-y-4 pl-0">
-            {{ range $i, $chapter := . }}
-            <li>
-              <a href="{{ $chapter.RelPermalink }}"
-                 class="series-chapter-item flex items-start gap-4 rounded-lg bg-theme-light p-5 transition hover:bg-primary/5 dark:bg-darkmode-theme-light dark:hover:bg-darkmode-primary/10">
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white dark:bg-darkmode-primary dark:text-darkmode-body">
-                  {{ add $i 1 }}
-                </span>
-                <div class="flex-1">
-                  <h3 class="font-semibold group-hover:text-primary dark:group-hover:text-darkmode-primary">
-                    {{ $chapter.Title }}
-                  </h3>
-                  <p class="mt-1 text-sm text-light dark:text-darkmode-light">
-                    {{ $chapter.Summary | plainify | truncate 120 }}
-                  </p>
-                  <span class="mt-2 inline-block text-xs text-light dark:text-darkmode-light">
-                    <i class="fa-regular fa-file-lines mr-1"></i>
-                    {{ $chapter.ReadingTime }} {{ T "min_read" }}
-                  </span>
-                </div>
-              </a>
-            </li>
-            {{ end }}
-          </ol>
-        </div>
-        {{ end }}
-
-        {{/* Tags */}}
-        {{ with .Params.tags }}
-        <div class="mt-10">
-          <h5 class="mr-3 inline-block">{{ T "tags" }} :</h5>
-          <ul class="inline-block">
-            {{ range . }}
-            <li class="inline-block">
-              <a class="bg-theme-light hover:bg-primary dark:bg-darkmode-theme-light dark:hover:bg-darkmode-primary dark:hover:text-dark m-1 block rounded px-3 py-1 hover:text-white"
-                href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/">
-                {{ . | humanize }}
-              </a>
-            </li>
-            {{ end }}
-          </ul>
-        </div>
-        {{ end }}
-
-      </div>
-    </div>
-  </div>
-</section>
+{{ partial "series-landing" . }}
 
 {{ else }}
 {{/* ===== Regular blog listing ===== */}}
@@ -97,11 +13,21 @@
       <!-- blog posts -->
       <div class="lg:col-8">
         <div class="row">
-          {{/* Collect current language: regular posts + series landing pages */}}
           {{ $regularPosts := .RegularPages }}
-          {{ $seriesPages := where .Pages "Params.series" true }}
-          {{ $currentPages := $regularPosts | append $seriesPages }}
           {{ $currentLang := site.Language.Lang }}
+          {{ $blogPath := .Path }}
+
+          {{/* Discover series landing pages via frontmatter series_paths */}}
+          {{ $seriesPages := where .RegularPages "Kind" "__nomatch__" }}
+          {{ with .Params.series_paths }}
+            {{ range . }}
+              {{ with site.GetPage . }}
+                {{ $seriesPages = $seriesPages | append . }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+
+          {{ $currentPages := $regularPosts | append $seriesPages }}
 
           {{/* Build dedup set: ContentBaseName for posts, dirname for series */}}
           {{ $seen := newScratch }}
@@ -124,12 +50,17 @@
                     {{ $fallbackLangs.Set .File.ContentBaseName .Language.Lang }}
                   {{ end }}
                 {{ end }}
-                {{/* Series landing pages */}}
-                {{ range where $otherBlog.Pages "Params.series" true }}
-                  {{ $key := printf "s:%s" (path.Base .File.Dir) }}
-                  {{ if not ($seen.Get $key) }}
-                    {{ $fallbackPages = $fallbackPages | append . }}
-                    {{ $fallbackLangs.Set $key .Language.Lang }}
+                {{/* Series from other language */}}
+                {{ $otherSite := . }}
+                {{ with $otherBlog.Params.series_paths }}
+                  {{ range . }}
+                    {{ with $otherSite.GetPage . }}
+                      {{ $key := printf "s:%s" (path.Base .File.Dir) }}
+                      {{ if not ($seen.Get $key) }}
+                        {{ $fallbackPages = $fallbackPages | append . }}
+                        {{ $fallbackLangs.Set $key .Language.Lang }}
+                      {{ end }}
+                    {{ end }}
                   {{ end }}
                 {{ end }}
               {{ end }}
