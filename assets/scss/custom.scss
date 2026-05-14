@@ -1,22 +1,5 @@
 // Custom styles
 
-// Table of Contents styling
-.toc {
-  @apply mb-8 rounded bg-theme-light p-4 dark:bg-darkmode-theme-light;
-
-  ul {
-    @apply list-inside list-decimal pl-2;
-  }
-
-  li {
-    @apply py-0.5 text-sm;
-  }
-
-  a {
-    @apply hover:text-primary dark:hover:text-darkmode-primary;
-  }
-}
-
 // Series chapter list
 .series-chapter-item {
   &:hover h3 {
@@ -36,7 +19,6 @@
 @media print {
   nav,
   footer,
-  .toc,
   .darkmode-toggle,
   .series-nav {
     display: none !important;
