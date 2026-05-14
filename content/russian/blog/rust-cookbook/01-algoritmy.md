@@ -3,7 +3,7 @@ title: "Алгоритмы"
 description: "Генерация произвольных значений и сортировка векторов в Rust"
 date: 2026-05-14T05:00:00Z
 weight: 1
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/01-algoritmy-cover.png"
 categories: ["Rust"]
 tags: ["rust", "алгоритмы"]
 ---

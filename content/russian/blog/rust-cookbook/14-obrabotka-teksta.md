@@ -3,7 +3,7 @@ title: "Обработка текста"
 description: "Регулярные выражения и разбор строк в Rust"
 date: 2026-05-14T05:00:00Z
 weight: 14
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/14-obrabotka-teksta-cover.png"
 categories: ["Rust"]
 tags: ["rust", "обработка текста"]
 ---

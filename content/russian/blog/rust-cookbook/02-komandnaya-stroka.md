@@ -3,7 +3,7 @@ title: "Командная строка"
 description: "Разбор аргументов командной строки и работа с ANSI-терминалом в Rust"
 date: 2026-05-14T05:00:00Z
 weight: 2
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/02-komandnaya-stroka-cover.png"
 categories: ["Rust"]
 tags: ["rust", "cli"]
 ---

@@ -3,7 +3,7 @@ title: "Кодирование"
 description: "Наборы символов, обработка CSV и структурированные данные (JSON, TOML)"
 date: 2026-05-14T05:00:00Z
 weight: 9
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/09-kodirovanie-cover.png"
 categories: ["Rust"]
 tags: ["rust", "кодирование"]
 ---

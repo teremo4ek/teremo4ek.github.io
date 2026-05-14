@@ -133,6 +133,30 @@ Same structure under `content/russian/blog/`. Same `series: true` flag. Chapter 
 - UI translations: `i18n/en.yaml` / `i18n/ru.yaml`
 - Russian blog posts go in `content/russian/blog/` with the same frontmatter format
 
+## Generating Cover Images
+
+Cover images are generated via **Pollinations.ai** (free, no API key). Style: pencil sketch, no background, 1024x480.
+
+### URL format
+
+```
+https://image.pollinations.ai/prompt/{encoded_prompt}?width=1024&height=480&nologo=true
+```
+
+### Prompt format
+
+English only: `pencil sketch, {topic}`. Examples: `pencil sketch, sorting algorithm`, `pencil sketch, database storage cylinders`.
+
+### Script
+
+`tools/generate-covers.py` — Python script that downloads images and saves them to `assets/images/rust-cookbook/`. Requires `requests` (run via `.venv/bin/python`).
+
+### Adding images for new posts
+
+1. Add entry to `IMAGES` list in the script: `("filename-cover.png", "pencil sketch, topic")`
+2. Run `.venv/bin/python scripts/generate-covers.py`
+3. Set `image: "/images/rust-cookbook/filename-cover.png"` in the post's frontmatter
+
 ## Theme
 
 `themes/hugoplate/` — do not modify directly. Override via `layouts/` or `assets/`.

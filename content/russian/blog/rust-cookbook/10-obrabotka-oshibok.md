@@ -3,7 +3,7 @@ title: "Обработка ошибок"
 description: "Правильная обработка ошибок в main, работа со всеми типами ошибок и получение трассировок"
 date: 2026-05-14T05:00:00Z
 weight: 10
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/10-obrabotka-oshibok-cover.png"
 categories: ["Rust"]
 tags: ["rust", "обработка ошибок"]
 ---

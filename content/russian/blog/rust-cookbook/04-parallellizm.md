@@ -3,7 +3,7 @@ title: "Параллелизм"
 description: "Явные потоки, параллельная обработка данных и глобальное мутабельное состояние"
 date: 2026-05-14T05:00:00Z
 weight: 4
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/04-parallellizm-cover.png"
 categories: ["Rust"]
 tags: ["rust", "параллелизм"]
 ---

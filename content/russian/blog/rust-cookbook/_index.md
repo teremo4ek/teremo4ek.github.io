@@ -2,7 +2,7 @@
 title: "Rust Cookbook"
 description: "Практическое руководство по Rust: алгоритмы, CLI, сжатие, параллелизм, криптография, базы данных и многое другое"
 date: 2026-05-14T05:00:00Z
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/rust-cookbook-cover.png"
 categories: ["Rust"]
 tags: ["rust", "tutorial", "cookbook"]
 series: true

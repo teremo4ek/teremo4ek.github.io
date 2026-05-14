@@ -3,7 +3,7 @@ title: "Криптография"
 description: "Хеширование SHA-256, HMAC и шифрование PBKDF2"
 date: 2026-05-14T05:00:00Z
 weight: 5
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/05-kriptografiya-cover.png"
 categories: ["Rust"]
 tags: ["rust", "криптография"]
 ---

@@ -3,7 +3,7 @@ title: "Инструменты для разработки"
 description: "Отладка с помощью логирования и версионирование с помощью semver"
 date: 2026-05-14T05:00:00Z
 weight: 8
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/08-instrumenty-razrabotki-cover.png"
 categories: ["Rust"]
 tags: ["rust", "инструменты"]
 ---

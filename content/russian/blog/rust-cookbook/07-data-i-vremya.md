@@ -3,7 +3,7 @@ title: "Дата и время"
 description: "Продолжительность, вычисление, разбор и форматирование даты и времени"
 date: 2026-05-14T05:00:00Z
 weight: 7
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/07-data-i-vremya-cover.png"
 categories: ["Rust"]
 tags: ["rust", "дата и время"]
 ---

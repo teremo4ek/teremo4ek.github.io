@@ -3,7 +3,7 @@ title: "Операционная система"
 description: "Запуск внешних команд, конвейеры, перенаправление ввода/вывода и переменные среды"
 date: 2026-05-14T05:00:00Z
 weight: 13
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/13-operacionnaya-sistema-cover.png"
 categories: ["Rust"]
 tags: ["rust", "ОС"]
 ---

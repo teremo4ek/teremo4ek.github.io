@@ -3,7 +3,7 @@ title: "Файловая система"
 description: "Чтение и запись файлов, обход директорий и поиск файлов"
 date: 2026-05-14T05:00:00Z
 weight: 11
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/11-faylovaya-sistema-cover.png"
 categories: ["Rust"]
 tags: ["rust", "файловая система"]
 ---

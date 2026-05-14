@@ -3,7 +3,7 @@ title: "Разное"
 description: "Количество ядер CPU, лениво оцениваемые константы и обработка запросов на неиспользуемом порту"
 date: 2026-05-14T05:00:00Z
 weight: 12
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/12-raznoe-cover.png"
 categories: ["Rust"]
 tags: ["rust", "разное"]
 ---

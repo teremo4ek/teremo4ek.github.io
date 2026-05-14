@@ -3,7 +3,7 @@ title: "База данных"
 description: "Работа с SQLite и PostgreSQL: создание таблиц, CRUD-операции и транзакции"
 date: 2026-05-14T05:00:00Z
 weight: 6
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/06-baza-dannyh-cover.png"
 categories: ["Rust"]
 tags: ["rust", "базы данных"]
 ---

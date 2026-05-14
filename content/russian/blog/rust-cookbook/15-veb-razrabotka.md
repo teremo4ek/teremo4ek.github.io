@@ -3,7 +3,7 @@ title: "Веб-разработка"
 description: "Извлечение ссылок, работа с URL, типы медиа и HTTP-клиенты"
 date: 2026-05-14T05:00:00Z
 weight: 15
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/15-veb-razrabotka-cover.png"
 categories: ["Rust"]
 tags: ["rust", "веб"]
 ---

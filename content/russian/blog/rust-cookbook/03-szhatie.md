@@ -3,7 +3,7 @@ title: "Сжатие"
 description: "Работа с tarball-архивами: распаковка, сжатие и удаление префиксов путей"
 date: 2026-05-14T05:00:00Z
 weight: 3
-image: "/images/image-placeholder.png"
+image: "/images/rust-cookbook/03-szhatie-cover.png"
 categories: ["Rust"]
 tags: ["rust", "сжатие", "архивы"]
 ---
