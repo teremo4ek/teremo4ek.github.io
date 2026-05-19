@@ -100,34 +100,30 @@ fn main() -> Result<(), Error> {
 Получаем текущую рабочую директорию путем вызова `env::current_dir`, затем для каждой сущности в `fs::read_dir`, извлекаем `DirEntry::path` и получаем метаданные через `fs::Metadata`. `Metadata::modified` возвращает `SystemTime::elapsed` — время, прошедшее с момента последней модификации.
 
 ```rust
-use error_chain::error_chain;
+use anyhow::{Context, Result};
 
 use std::{env, fs};
 
-error_chain! {
-    foreign_links {
-        Io(std::io::Error);
-        SystemTimeError(std::time::SystemTimeError);
-    }
-}
-
 fn main() -> Result<()> {
-    let current_dir = env::current_dir()?;
-    println!(
-        "Файлы, модифицированные в течение последних 24 часов в {:?}:",
-        current_dir
-    );
+    let current_dir = env::current_dir().context("Failed to get current directory")?;
+    println!("Files modified in the last 24 hours in {}:", current_dir.display());
 
-    for entry in fs::read_dir(current_dir)? {
-        let entry = entry?;
+    for entry in fs::read_dir(&current_dir).context("Failed to read directory")? {
+        let entry = entry.context("Failed to read directory entry")?;
         let path = entry.path();
-        let metadata = fs::metadata(&path)?;
-        let last_modified = metadata.modified()?.elapsed()?.as_secs();
+        let metadata = fs::metadata(&path).context("Failed to read metadata")?;
+        let last_modified = metadata
+            .modified()
+            .context("Failed to get modification time")?
+            .elapsed()
+            .context("Modification time is in the future")?
+            .as_secs();
 
         if last_modified < 24 * 3600 && metadata.is_file() {
+            let file_name = path.file_name().context("Path has no file name")?;
             println!(
-                "Файл: {:?}, с момента последней модификации прошло {:?} секунд, файл доступен только для чтения: {:?}, размер: {:?} байтов.",
-                path.file_name().ok_or("Название файла отсутствует")?,
+                "File: {}, last modified {} seconds ago, read-only: {}, size: {} bytes.",
+                file_name.display(),
                 last_modified,
                 metadata.permissions().readonly(),
                 metadata.len(),
@@ -137,6 +133,7 @@ fn main() -> Result<()> {
 
     Ok(())
 }
+
 ```
 
 ### Рекурсивный поиск дубликатов
