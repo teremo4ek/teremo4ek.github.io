@@ -674,19 +674,11 @@ async fn main() -> Result<()> {
 Используем `reqwest::blocking::Client::head` для получения `Content-Length` (размера содержимого) ответа. Используем `reqwest::blocking::Client::get` для загрузки содержимого по частям размером 10240 байт с отслеживанием прогресса.
 
 ```rust
-use error_chain::error_chain;
+use anyhow::{bail, Context, Result};
 use reqwest::header::{HeaderValue, CONTENT_LENGTH, RANGE};
 use reqwest::StatusCode;
-use std::fs::File;
+use std::fs::{self, File};
 use std::str::FromStr;
-
-error_chain! {
-    foreign_links {
-        Io(std::io::Error);
-        Reqwest(reqwest::Error);
-        Header(reqwest::header::ToStrError);
-    }
-}
 
 struct PartialRangeIter {
     start: u64,
@@ -697,7 +689,7 @@ struct PartialRangeIter {
 impl PartialRangeIter {
     pub fn new(start: u64, end: u64, buffer_size: u32) -> Result<Self> {
         if buffer_size == 0 {
-            Err("невалидный `buffer_size`, размер буфера должен превышать 0")?;
+            bail!("invalid `buffer_size`, must be greater than 0");
         }
         Ok(PartialRangeIter {
             start,
@@ -727,32 +719,32 @@ impl Iterator for PartialRangeIter {
 
 fn main() -> Result<()> {
     let url = "https://httpbin.org/range/102400?duration=2";
-    const CHUNK_SIZE: u32 = 10240;
+    const CHUNK_SIZE: u32 = 10000;
 
     let client = reqwest::blocking::Client::new();
     let response = client.head(url).send()?;
     let length = response
         .headers()
         .get(CONTENT_LENGTH)
-        .ok_or("Ответ не содержит размера содержимого")?;
-    let length =
-        u64::from_str(length.to_str()?).map_err(|_| "Невалидный заголовок `Content-Length`")?;
+        .context("response does not contain content length")?;
+    let length = u64::from_str(length.to_str()?).context("invalid `Content-Length` header")?;
 
-    let mut output_file = File::create("download.bin")?;
+    fs::create_dir_all("output")?;
+    let mut output_file = File::create("output/download.bin")?;
 
-    println!("Начинаем загрузку...");
+    println!("starting download...");
     for range in PartialRangeIter::new(0, length - 1, CHUNK_SIZE)? {
-        println!("Диапазон {:?}", range);
+        println!("range {:?}", range);
         let mut response = client.get(url).header(RANGE, range).send()?;
 
         let status = response.status();
         if !(status == StatusCode::OK || status == StatusCode::PARTIAL_CONTENT) {
-            error_chain::bail!("Неожиданный ответ сервера: {}", status)
+            bail!("unexpected server response: {}", status)
         }
         std::io::copy(&mut response, &mut output_file)?;
     }
 
-    println!("Загрузка успешно завершена");
+    println!("download completed successfully");
 
     Ok(())
 }
