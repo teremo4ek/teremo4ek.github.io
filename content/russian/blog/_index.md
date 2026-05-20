@@ -4,4 +4,6 @@ meta_title: ""
 description: "Записи в блоге Юрия Белого"
 series_paths:
   - "/blog/rust-cookbook"
+  - "/blog/rust"
+  - "/blog/tokio"
 ---

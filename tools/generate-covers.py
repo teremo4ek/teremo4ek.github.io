@@ -3,26 +3,32 @@ import os
 import time
 from urllib.parse import quote
 
-OUTPUT_DIR = "assets/images/rust-cookbook"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
 IMAGES = [
-    ("11-faylovaya-sistema-cover.png", "pencil sketch, file system directory tree"),
-    ("12-raznoe-cover.png", "pencil sketch, CPU processor chip"),
-    ("13-operacionnaya-sistema-cover.png",
-     "pencil sketch, operating system terminal shell"),
-    ("14-obrabotka-teksta-cover.png", "pencil sketch, text processing regex patterns"),
-    ("15-veb-razrabotka-cover.png", "pencil sketch, web development HTTP browser"),
+    # Tokio series
+    ("tokio/tokio-cover.png", "pencil sketch, async runtime engine"),
+    ("tokio/01-obzor-cover.png", "pencil sketch, server network overview"),
+    ("tokio/02-nastroyka-cover.png", "pencil sketch, terminal setup"),
+    ("tokio/03-sozdanie-potokov-cover.png", "pencil sketch, spawning threads"),
+    ("tokio/04-obshchee-sostoyanie-cover.png",
+     "pencil sketch, shared database lock"),
+    ("tokio/05-kanaly-cover.png", "pencil sketch, message channels pipes"),
+    ("tokio/06-vvod-vyvod-cover.png", "pencil sketch, input output data stream"),
+    ("tokio/07-kadrirovanie-cover.png", "pencil sketch, data framing packets"),
+    ("tokio/08-asinkhronnost-cover.png", "pencil sketch, gears async machinery"),
+    ("tokio/09-vybor-cover.png", "pencil sketch, branching path selection"),
+    ("tokio/10-potoki-cover.png", "pencil sketch, flowing data stream"),
 ]
 
-for i, (filename, prompt) in enumerate(IMAGES):
-    out_path = os.path.join(OUTPUT_DIR, filename)
+for i, (filepath, prompt) in enumerate(IMAGES):
+    out_path = os.path.join("assets/images", filepath)
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+
     if os.path.exists(out_path):
-        print(f"[{i+1}/{len(IMAGES)}] SKIP (exists): {filename}")
+        print(f"[{i+1}/{len(IMAGES)}] SKIP (exists): {filepath}")
         continue
 
     url = f"https://image.pollinations.ai/prompt/{quote(prompt)}?width=1024&height=480&nologo=true"
-    print(f"[{i+1}/{len(IMAGES)}] Generating: {filename} — {prompt}")
+    print(f"[{i+1}/{len(IMAGES)}] Generating: {filepath} — {prompt}")
 
     try:
         resp = requests.get(url, timeout=120)
@@ -37,6 +43,6 @@ for i, (filename, prompt) in enumerate(IMAGES):
         print(f"  -> ERROR: {e}")
 
     if i < len(IMAGES) - 1:
-        time.sleep(3)
+        time.sleep(5)
 
 print("\nDone!")
