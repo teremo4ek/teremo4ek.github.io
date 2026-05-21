@@ -1,0 +1,16 @@
+{{ if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": {{ site.Params.metadata.author }},
+  "url": {{ site.BaseURL }},
+  "jobTitle": "Software Engineer",
+  "sameAs": [
+    "https://twitter.com/teremo4ek",
+    "https://github.com/teremo4ek",
+    "https://www.linkedin.com/in/yurybely"
+  ]
+}
+</script>
+{{ end }}
