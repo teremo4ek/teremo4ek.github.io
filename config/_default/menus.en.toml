@@ -16,26 +16,6 @@ name = "Blog"
 url = "/blog"
 weight = 3
 
-[[main]]
-weight = 4
-name = "Pages"
-
-# [[main]]
-# parent = "Pages"
-# name = "Contact"
-# url = "/contact"
-
-# [[main]]
-# parent = "Pages"
-# name = "Authors"
-# url = "/authors"
-
-[[main]]
-parent = "Pages"
-name = "Categories"
-url = "/categories"
-
-
 # footer menu
 # [[footer]]
 # name = "About"

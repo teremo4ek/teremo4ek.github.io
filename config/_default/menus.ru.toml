@@ -15,12 +15,3 @@ weight = 2
 name = "Блог"
 url = "/blog"
 weight = 3
-
-[[main]]
-weight = 4
-name = "Страницы"
-
-[[main]]
-parent = "Страницы"
-name = "Категории"
-url = "/categories"
