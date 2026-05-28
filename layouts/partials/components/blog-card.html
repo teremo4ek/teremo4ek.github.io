@@ -43,11 +43,15 @@
       <li class="mr-4 inline-block">
         <i class="fa-regular fa-folder mr-1"></i>
         {{ range $i,$p:= $categories }}
+        {{ if $fallbackLang }}
+        <span class="ms-1">{{ . | humanize }}{{ if ne $i (sub (len $categories) 1) }},{{ end }}</span>
+        {{ else }}
         <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/">{{ . | humanize }}{{ if ne $i
           (sub (len $categories) 1) }}
           {{ "," }}
           {{ end }}
         </a>
+        {{ end }}
         {{ end }}
       </li>
     </ul>
